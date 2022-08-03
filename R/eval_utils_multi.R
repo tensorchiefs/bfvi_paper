@@ -1,4 +1,4 @@
-get_losses_metrics = function(dir_name_r, reps, num_boot = 1000){
+get_losses_metrics = function(dir_name_r, reps, num_boot = 1000, log_ratios=NULL, load_data=TRUE){
   loss_hists = all_samples = {}
   KL_est = KL_var = ELBO_est = ELBO_var = k_hat_var = upper_slope_loss = lower_slope_loss = evidence_est = evid_var = losses_sd = losses_mean = k_hats = rep(NA, reps)
   k_CI = matrix(rep(NA, 3*reps), ncol = 3)
@@ -6,14 +6,29 @@ get_losses_metrics = function(dir_name_r, reps, num_boot = 1000){
   ELBO_CI = matrix(rep(NA, 3*reps), ncol = 3)
   KL_CI = matrix(rep(NA, 3*reps), ncol = 3)
   for (rep in 1:reps) {
-    load(file.path(dir_name_r, paste0('loss_hist_',rep,'.rda')))
-    loss_hists[[rep]] = loss_hist   
-    load(file.path(dir_name_r, paste0('samples_',rep,'.rda')))
-    all_samples[[rep]] = samples  
-    
-    #Estimation of k_hat
-    log_joint = samples$LLs + samples$L_priors
-    log_ratios = as.vector(log_joint - samples$log_qs)
+    if (load_data) {
+      load(file.path(dir_name_r, paste0('loss_hist_',rep,'.rda')))
+      loss_hists[[rep]] = loss_hist   
+      load(file.path(dir_name_r, paste0('samples_',rep,'.rda')))
+      all_samples[[rep]] = samples  
+      
+      
+      xd = 80000:100000
+      yd = loss_hists[[rep]][xd]
+      lower_slope_loss[rep] = confint(lm(yd ~ xd))[2,1]
+      upper_slope_loss[rep] = confint(lm(yd ~ xd))[2,2]
+      
+      N = length(loss_hist)
+      sd(loss_hist[(N-1e3):N]) 
+      losses_mean[rep] = mean(loss_hist[(N-1e3):N])
+      losses_sd[rep] = sd(loss_hist[(N-1e3):N])
+      
+      #Estimation of k_hat
+      log_joint = samples$LLs + samples$L_priors
+      log_ratios = as.vector(log_joint - samples$log_qs)
+      
+      
+    } 
     res_psis = psis(log_ratios)
     k_hats[rep] = res_psis$diagnostics$pareto_k
     
@@ -47,15 +62,8 @@ get_losses_metrics = function(dir_name_r, reps, num_boot = 1000){
     #plot(density(boot_elbo), xlim=c(-28.7,-28.5), main=rep)
     #lines(density(boot_evid), col='red')
     
-    N = length(loss_hist)
-    sd(loss_hist[(N-1e3):N]) 
-    losses_mean[rep] = mean(loss_hist[(N-1e3):N])
-    losses_sd[rep] = sd(loss_hist[(N-1e3):N])
     
-    xd = 80000:100000
-    yd = loss_hists[[rep]][xd]
-    lower_slope_loss[rep] = confint(lm(yd ~ xd))[2,1]
-    upper_slope_loss[rep] = confint(lm(yd ~ xd))[2,2]
+    
     
   }#Reps
   df = data.frame(
