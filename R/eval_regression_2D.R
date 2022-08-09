@@ -92,7 +92,16 @@ for (i in 1:5){
   }
 }
 save(df3, file='R/runs/2D_MF_Gauss/metrics_reps.rda')
-
+## k-hat plot
+k_bar = mean(df3$k_hats)
+var_boot = mean(df3$k_hat_var)
+var_runs = var(df3$k_hats)
+var_rubin = var_boot + (1 + 1/reps) * var_runs
+k_rubin_lower = k_bar - qnorm(0.95)*sqrt(var_rubin)
+k_rubin_upper = k_bar + qnorm(0.95)*sqrt(var_rubin)
+k_bar
+k_rubin_lower
+k_rubin_upper
 
 b = read_csv("R/runs/2D_MF_Gauss/2D_MFG_intercept_samples.csv.gz")
 w = read_csv("R/runs/2D_MF_Gauss/2D_MFG_w_samples.csv.gz")
