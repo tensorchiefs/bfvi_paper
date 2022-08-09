@@ -77,11 +77,22 @@ ggsave(p, filename = 'figures/2D_pairs.pdf', width = 7, height = 7)
 # Mean field gaussian
 # See python NB 2D_MF_Gaussian_VI.ipynb
 
-log_qs = read_csv("R/runs/2D_MF_Gauss/2D_MFG_qs_samples.csv.gz")
-log_joints = read_csv("R/runs/2D_MF_Gauss/2D_MFG_log_joints_samples.csv.gz")
-log_ratios = as.matrix(log_joints - log_qs, ncols=1)
-df3 = get_losses_metrics(dir_name_r = dir_name, reps=1, num_boot = 100, 
-                   log_ratios = log_ratios, load_data = FALSE)
+##### Calculation of k_hat
+df3 = NULL
+for (i in 1:5){
+  log_qs = read_csv(paste0("R/runs/2D_MF_Gauss/2D_MFG_qs_samples_",i,".csv.gz"))
+  log_joints = read_csv(paste0("R/runs/2D_MF_Gauss/2D_MFG_log_joints_samples_",i,".csv.gz"))
+  log_ratios = as.matrix(log_joints - log_qs, ncols=1)
+  df3t = get_losses_metrics(dir_name_r = dir_name, reps=1, num_boot = 1000, 
+                     log_ratios = log_ratios, load_data = FALSE)[['df']]
+  if (i == 1){
+    df3 = df3t
+  } else{
+    df3 = rbind(df3,df3t)
+  }
+}
+save(df3, file='R/runs/2D_MF_Gauss/metrics_reps.rda')
+
 
 b = read_csv("R/runs/2D_MF_Gauss/2D_MFG_intercept_samples.csv.gz")
 w = read_csv("R/runs/2D_MF_Gauss/2D_MFG_w_samples.csv.gz")

@@ -96,7 +96,6 @@ get_losses_metrics = function(dir_name_r, reps, num_boot = 1000, log_ratios=NULL
   return(list(loss_hists=loss_hists, df=df))
 }
 
-
 make_plots_and_stats = function(dir_name, reps){
   print(paste0("Creating plots in ", dir_name))
   rets = get_losses_metrics(dir_name, reps=reps, num_boot = 1000)
