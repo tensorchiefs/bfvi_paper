@@ -139,7 +139,7 @@ df_quantiles = rbind(df_quantiles, data.frame(x = xx, y = y_l_g[,1], method = 'G
 df_quantiles = rbind(df_quantiles, data.frame(x = xx, y = y_med_g[,1], method = 'Gauss-MF',d=9))
 
 ggplot(df_quantiles) + 
-  geom_line(data = df_samples, aes(x=x,y=y,group=t), col='lightgray', alpha=0.5)+
+  geom_line(data = df_samples, aes(x=x,y=y,group=t), col='lightblue', alpha=0.5)+
   geom_point(data = data.frame(x_r, y_r), aes(x=x_r, y=y_r), col='black', size=2) + 
   geom_line(data = df_quantiles, aes(x=x,y=y, col=method, group = d)) +
   scale_color_manual(values = c('blue', 'orange', 'red')) + 
