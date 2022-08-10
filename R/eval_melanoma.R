@@ -56,7 +56,7 @@ ci.auc(y_obs, ps) #95% CI: 0.6086-0.7075 (DeLong)
 
 #### MCMC Densities
 library(data.table)
-mcmc_densities = fread("mcmc/mela/mcmcSampleTabular_mela_M2.csv")
+mcmc_densities = fread("Ivonne_MA/mcmcSampleTabular_mela_M2.csv")
 d = density(mcmc_densities$slope, adjust = 1.5) #2. larger bw for smoother plot
 df = data.frame(method='M2: MCMC', slope = d$x, density = d$y)
 
@@ -74,14 +74,14 @@ idx = sort(tmvi_cnn$slope_weight, index.return = TRUE)$ix
 #plot(tmvi_cnn$slope_weight, tmvi_cnn$slope_density)
 df = rbind(df, data.frame(method='M3: CNN+BF-VI', slope = c(tmvi_cnn$slope_weight[idx], 0.95), density = c(tmvi_cnn$slope_density[idx], 0)))
 
-ggplot(df) + 
+ggplot(df) +
   geom_line(aes(x=slope, y=density, col=method, linetype=method),size=1.2) +
-  #geom_vline(xintercept=0.7057) + #ML solution 
-  xlim(-0.25,1) + 
+  #geom_vline(xintercept=0.7057) + #ML solution
+  xlim(-0.25,1) +
   scale_color_manual(values = c('blue', 'red', 'green')) +
   scale_linetype_manual(values = c('solid', 'solid', 'solid')) +
   xlab(expression(beta[1])) +
-  #xlab('slope [age]') + 
+  #xlab('slope [age]') +
   apatheme
 
 ggsave('figures//age-slope.pdf',width = 7/1.3, height=3.8/1.3)
