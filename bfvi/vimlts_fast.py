@@ -96,10 +96,10 @@ class VimltsLinear(tf.keras.layers.Layer):
 
         # Kernel
         shape = (input_shape.as_list()[-1], self.units_)
-        #self.z_dist_ = tfd.Normal(loc=tf.zeros(shape),
-        #                           scale=tf.ones(shape))
+        self.z_dist_ = tfd.Normal(loc=tf.zeros(shape),
+                                   scale=tf.ones(shape))
         #loc=0.5,scale=0.15,low=0.,high=1.
-        self.z_dist_ = tfd.TruncatedNormal(loc=0.5*tf.ones(shape), scale=0.15*tf.ones(shape), low=0.0001+tf.zeros(shape), high=tf.ones(shape)-0.0001)
+        #self.z_dist_ = tfd.TruncatedNormal(loc=0.5*tf.ones(shape), scale=0.15*tf.ones(shape), low=0.0001+tf.zeros(shape), high=tf.ones(shape)-0.0001)
         #self.z_dist_ = tfd.Uniform(low=1e-12+tf.zeros(shape), high=tf.ones(shape)-1e-12)
 
         self.k_alpha_w = self.add_weight(name='k_alpha_w',
