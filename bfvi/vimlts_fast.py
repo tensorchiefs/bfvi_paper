@@ -168,9 +168,9 @@ class VimltsLinear(tf.keras.layers.Layer):
         :return: [#samples x #input x #output]
         """
         z_ = tf.math.multiply(tf.math.softplus(self.alpha_z), z) - self.beta_z
-        return (z) #TruncF2
+        #return (z) #TruncF2
         #return tf.math.sigmoid(z) #SigmoidF2
-        #return tf.math.sigmoid(z_) #F1F2
+        return tf.math.sigmoid(z_) #F1F2
 
     def f_2(self, z_):
         """
