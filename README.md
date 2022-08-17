@@ -2,6 +2,14 @@
 
 # How to Reproduce the results
 
+## Bernoulli:
+### Workflow
+#### Raw Data (Python/Bernoulli/bernoulli_1D_F1F2.csv.gz)
+This includes samples form the analytical solution, the Gaussian-VI, and the BF-Vi approximation
+Created by Python/Bernoulli/Bernoulli_1D_F1F2.ipnb using Python/Bernoulli/vimlts_fast.py
+#### Plotting
+The figure is created by R/eval_Bernoulli_1D.R using Python/Bernoulli/bernoulli_1D_F1F2.csv.gz
+
 ## Cauchy
 ### Workflow
 #### Raw Data
