@@ -31,7 +31,7 @@ The script R/eval_cauchy_ablation_create_kl_plot_data.R creates the data files f
 The figures (Fig 3a, 3b  at data 150822)  are created with  R/eval_cauchy_ablation.R
 
 # Models with multiple parameters
-The results for the remaining experiments (except MELA) have created as follows. First using the script `multidimensional_script` with the follwing command line parameters T=10 M=50 method=’F1F2’ Epochs = 100000 reps=5 .
+The results for the remaining experiments (except Melanoma, which is described below) have created as follows. First using the script `multidimensional_script` with the follwing command line parameters T=10 M=50 method=’F1F2’ Epochs = 100000 reps=5 .
 
 for example
 ```
@@ -41,7 +41,7 @@ R CMD BATCH --vanilla "--args run 8SCHOOLS_CP F1F2 100000 50 10" multidimensiona
 ```
 produces samples from the posterior (`w` together with the variational posterior densities `log_qs`, the prior `L_prio` and likelihood `LLs` at those samples). Fore.g. `R/run/gpu_8SCHOOLS_F1F2_Epo_100000_M_50_T_10/samples_1.rda`) for 5 runs. Also storted are the loss histories. 
 
-Using the eval-files (e.g `R/eval_8Schools_cp.R`) the metrics are calculated and the final plots are procuded. The metrics comprise `k-hat` with bootstraps CI, and the PSIS score.
+Using the corresponding eval-files (e.g `R/eval_8Schools_cp.R`) the metrics are calculated and the final plots are procuded. The metrics comprise `k-hat` with bootstraps CI, and the PSIS score.
 
 
 ## Melanoma:
