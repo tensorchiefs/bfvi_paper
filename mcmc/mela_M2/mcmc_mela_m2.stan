@@ -1,13 +1,13 @@
  data {
     int N;   //Number of Datapoints
     int M;   //Number of features (here 1)
-    real X[N, M]; //The data matrix (N-rows, M-columns)
-    int<lower=0, upper=1> y[N]; //The observation
+    real X[N, M];
+    int<lower=0, upper=1> y[N];
 }
-  
+
 parameters {
     real beta[M];
-    real beta0; 
+    real beta0;
 }
 
 model {
@@ -16,3 +16,4 @@ model {
     beta[M] ~ normal(0, 1);
     beta0 ~ normal(0, 1);
 }
+
