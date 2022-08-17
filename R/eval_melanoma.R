@@ -39,7 +39,6 @@ testdata = fread("data/mela_tab_testData.csv")
 x = testdata$standAge
 y_obs = testdata$target
 
-
 lls = rep(NA, length(x))
 ps = rep(NA, length(x))
 for (i in 1:length(x)) {
@@ -56,33 +55,47 @@ ci.auc(y_obs, ps) #95% CI: 0.6086-0.7075 (DeLong)
 
 #### MCMC Densities
 library(data.table)
-mcmc_densities = fread("Ivonne_MA/mcmcSampleTabular_mela_M2.csv")
-d = density(mcmc_densities$slope, adjust = 1.5) #2. larger bw for smoother plot
+if (FALSE){
+  # lineare regression with 1 predictor and 4 data points
+  trainData <- read.csv("data/mela_tab_data.csv")
+  N = nrow(trainData)
+  P = 1L #number of predictors
+  D = P + 1L  #Dimension (number of weights) predictors + intercept + sigma
+  melanom_data = list(N=N, M=P, X=matrix(trainData$standAge, ncol=1), y=trainData$target)
+  m = stan_model(file='mcmc/mela_M2/mcmc_mela_m2.stan')
+  fit <- sampling(m, data=melanom_data, iter=10000)
+  posts_mcmc = extract(fit)
+  fwrite(posts_mcmc, "mcmc/mela_M2/mcmc_M2.csv.gz")
+}
+mcmc_densities = fread("mcmc/mela_M2/mcmc_M2.csv.gz")
+d = density(mcmc_densities$beta, adjust = 1.5) #2. larger bw for smoother plot
 df = data.frame(method='M2: MCMC', slope = d$x, density = d$y)
 
-##### TMVI Densities
+##### BFVI Densities
 w1 = NULL
-for (b in 1:11){
+for (b in 1:11){ 
  w1 = append(w1, samples[(b-1)*4+4]$w[,1])
 }
 d = density(w1, adjust = 1) #2. larger bw for smoother plot
 df = rbind(df, data.frame(method='M2: BF-VI', slope = d$x, density = d$y))
 
-##### Densities with CNN
-tmvi_cnn = fread("Ivonne_MA/betaAgeTMVI.csv")
+##### Densities with CNN + BFVI for age
+tmvi_cnn = fread("Ivonne_MA/semi_posterior_slope_age.csv")
+#plot(tmvi_cnn$slope_weight, tmvi_cnn$slope_density)
 idx = sort(tmvi_cnn$slope_weight, index.return = TRUE)$ix
 #plot(tmvi_cnn$slope_weight, tmvi_cnn$slope_density)
 df = rbind(df, data.frame(method='M3: CNN+BF-VI', slope = c(tmvi_cnn$slope_weight[idx], 0.95), density = c(tmvi_cnn$slope_density[idx], 0)))
 
 ggplot(df) +
-  geom_line(aes(x=slope, y=density, col=method, linetype=method),size=1.2) +
+  geom_line(aes(x=slope, y=density, col=method, linetype=method),size=1.5) +
   #geom_vline(xintercept=0.7057) + #ML solution
   xlim(-0.25,1) +
   scale_color_manual(values = c('blue', 'red', 'green')) +
-  scale_linetype_manual(values = c('solid', 'solid', 'solid')) +
+  scale_linetype_manual(values = c('solid', 'dotted', 'solid')) +
+  #scale_size_manual(values = 50*c(1.2,2,1.2)) +
   xlab(expression(beta[1])) +
   #xlab('slope [age]') +
   apatheme
 
-ggsave('figures//age-slope.pdf',width = 7/1.3, height=3.8/1.3)
-#ggsave('~/Dropbox/Apps/Overleaf/bernvi/images/age-slope.pdf',width = 7/1.3, height=3.8/1.3)
+ggsave('figures/age-slope.pdf',width = 7, height=4)
+#ggsave('~/Dropbox/Apps/Overleaf/bernvi/images/age-slope.pdf',width = 7, height=4)
