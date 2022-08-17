@@ -1,5 +1,5 @@
 #############################################################
-# Creating the 1-D NN Regression figure
+# Melanoma experiment
 library(keras)
 library(tensorflow)
 library(tfprobability)
@@ -9,7 +9,7 @@ library(loo)
 library(rstan)
 
 source("R/eval_utils_multi.R")
-#Loading of cached data
+
 dir_name = 'R/runs/cpu_MELA_F1F2_Epo_100000_M_50_T_10/'
 reps = 5
 df = make_plots_and_stats(dir_name, reps)
@@ -17,6 +17,7 @@ df$k_bar #.04505376
 df$k_rubin_lower #-0.2926889
 df$k_rubin_upper #0.3827964
 
+# load variational posterior samples from BF-VI M2 fit
 load('R/runs/cpu_MELA_F1F2_Epo_100000_M_50_T_10/samples_1.rda')
 w = samples$w
 
@@ -53,7 +54,7 @@ mean(lls) #-0.08501698
 library(pROC)
 ci.auc(y_obs, ps) #95% CI: 0.6086-0.7075 (DeLong)
 
-#### MCMC Densities
+#### MCMC
 library(data.table)
 if (FALSE){
   # lineare regression with 1 predictor and 4 data points
@@ -67,19 +68,19 @@ if (FALSE){
   posts_mcmc = extract(fit)
   fwrite(posts_mcmc, "mcmc/mela_M2/mcmc_M2.csv.gz")
 }
-mcmc_densities = fread("mcmc/mela_M2/mcmc_M2.csv.gz")
-d = density(mcmc_densities$beta, adjust = 1.5) #2. larger bw for smoother plot
+mcmc_samples = fread("mcmc/mela_M2/mcmc_M2.csv.gz")
+d = density(mcmc_samples$beta, adjust = 1.5) #2. larger bw for smoother plot
 df = data.frame(method='M2: MCMC', slope = d$x, density = d$y)
 
-##### BFVI Densities
+##### BFVI
 w1 = NULL
-for (b in 1:11){ 
+for (b in 1:11){
  w1 = append(w1, samples[(b-1)*4+4]$w[,1])
 }
 d = density(w1, adjust = 1) #2. larger bw for smoother plot
 df = rbind(df, data.frame(method='M2: BF-VI', slope = d$x, density = d$y))
 
-##### Densities with CNN + BFVI for age
+##### samples from semi-structured M3 model from Ivonne
 tmvi_cnn = fread("Ivonne_MA/semi_posterior_slope_age.csv")
 #plot(tmvi_cnn$slope_weight, tmvi_cnn$slope_density)
 idx = sort(tmvi_cnn$slope_weight, index.return = TRUE)$ix
