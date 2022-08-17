@@ -31,7 +31,7 @@ The script R/eval_cauchy_ablation_create_kl_plot_data.R creates the data files f
 The figures (Fig 3a, 3b  at data 150822)  are created with  R/eval_cauchy_ablation.R
 
 # Models with multiple parameters
-The results for the remaining experiments (except MELA) have created as follows. First using the script `multidimensional_script` with the follwing command line parameters T=10 M=50 method=’F1F2’ Epochs = 100000 reps=5 .
+The results for the remaining experiments (except Melanoma, which is described below) have created as follows. First using the script `multidimensional_script` with the follwing command line parameters T=10 M=50 method=’F1F2’ Epochs = 100000 reps=5 .
 
 for example
 ```
@@ -41,10 +41,16 @@ R CMD BATCH --vanilla "--args run 8SCHOOLS_CP F1F2 100000 50 10" multidimensiona
 ```
 produces samples from the posterior (`w` together with the variational posterior densities `log_qs`, the prior `L_prio` and likelihood `LLs` at those samples). Fore.g. `R/run/gpu_8SCHOOLS_F1F2_Epo_100000_M_50_T_10/samples_1.rda`) for 5 runs. Also storted are the loss histories. 
 
-Using the eval-files (e.g `R/eval_8Schools_cp.R`) the metrics are calculated and the final plots are procuded. The metrics comprise `k-hat` with bootstraps CI, and the PSIS score.
+Using the corresponding eval-files (e.g `R/eval_8Schools_cp.R`) the metrics are calculated and the final plots are procuded. The metrics comprise `k-hat` with bootstraps CI, and the PSIS score.
 
 
+## Melanoma:
+### Workflow
+#### Raw Data 
+This includes samples for the age-slope posterior: MCMC samples (mcmc/mela_m2/mcmc_mela_m2.stan, R/eval_melanoma.r --> mcmc/mela_M2/mcmc_M2.csv.gz, M2 BF-VI samples (multidimensional_script.R store samples in R\runs\cpu_MELA_F1F2_Epo_100000_M_50_T_10, note that due to large data set size the fit was not possible on a standard GPU) , samples from semistructured M3 model (From Ivonne's master thesis, `Ivonne_MA/Semi-structured_NN.ipynb` (https://github.com/IvonneKo/ISIC_TMVI), samples stored in Ivonne_MA/semi_posterior_slope_age.csv) . 
 
+#### Plotting
+The figure is created by `R/eval_melanoma.r` which reads in posterior samples for the age-slope from MCMC, M2 BF-VI, M3 semi-structured.
 
 
 
