@@ -1,6 +1,6 @@
 #############################################################
 # Creating the 1-D Conjugate Prior Figure
-library(ggplot2) 
+library(ggplot2)
 library(dplyr)
 library(magrittr)
 
@@ -20,14 +20,20 @@ apatheme=theme_bw(base_size = 22)+
         axis.text.y=element_text(size = 20),
         axis.text.x=element_text(size = 20))
 
-df_p = df %>% 
+df_p = df %>%
   #filter(M %in% c(-1,0.5,1,2,10,30,100))  %>% #0.5 is Gauss, 0 is MCMC
-  filter(M %in% c(-1,0.5,1,10,30,100))  %>% 
-  arrange(desc(M),pi) 
-ggplot(df_p) + geom_line(aes(x=pi, y=p, col=Method, linetype=Method),size=1.2) + 
+  filter(M %in% c(-1,0.5,1,10,50))  %>%
+  arrange(desc(M),pi)
+
+df_a = filter(df_p, M==-1)
+
+
+ggplot(df_p) +
+  geom_line(aes(x=pi, y=p, col=Method),size=1.5) +
+  geom_line(data=df_a, aes(x=pi, y=p, col=Method),size=2.5, linetype="dotted") +
   xlab(expression(pi)) +
   apatheme
-  
+
 #Saving
 ggsave('figures/conjugate_prior.pdf',width = 7, height=7/sqrt(2))
 # ggsave('~/Dropbox/Apps/Overleaf/bernvi/images/conjugate_prior.pdf',width = 7, height=3.8)
@@ -46,8 +52,8 @@ if (FALSE){
   df$value = NULL
   df$type = 'BF-VI'
   df$type[df$M == 0.5] = 'Gauss'
-  
-  
+
+
   apatheme=theme_bw(base_size = 22)+
     theme(panel.grid.major=element_blank(),
           panel.grid.minor=element_blank(),
@@ -58,12 +64,12 @@ if (FALSE){
           legend.position = c(0.75,0.85),
           axis.text.y=element_text(size = 20),
           axis.text.x=element_text(size = 20))
-  
-  ggplot(df) + 
+
+  ggplot(df) +
     geom_boxplot(aes(x=M, y=KL, fill=type, group=cut_interval(x=M, length=0.25)))+
-    #geom_point(aes(x=M, y=KL, col=type)) + 
-    scale_x_log10() + 
+    #geom_point(aes(x=M, y=KL, col=type)) +
+    scale_x_log10() +
     scale_y_log10() +
     apatheme
-} 
+}
 
