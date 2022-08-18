@@ -35,7 +35,13 @@ The script `R/eval_cauchy_ablation_create_kl_plot_data.R` creates the data files
 The figures (Fig 3a, 3b)  are created with  `R/eval_cauchy_ablation.R`
 
 # Models with multiple parameters
-The BF-VI results for the remaining experiments (except Melanoma M2, which is described below) have created using `multidimensional_script.R`. In this script for the various models/data (like 8Schools_CP) the likelihood and the prior is defined. This script can be run with the follwing command line parameters T=10 M=50 method=’F1F2’ Epochs = 100000 reps=5 .
+The BF-VI results for the remaining experiments (except Melanoma M2, which is described below) have created using `multidimensional_script.R`. In this script for the various models/data (like 8Schools_CP) the likelihood and the prior is defined. This script can be run with the follwing command line parameters:
+
+* data the model to be used like (`8SCHOOLS_CP`) or `DIAMONDS`
+* method the transformation method used. We use `F1F2` in all experiments: which is normal -> linear transformation -> sigmoid --> Bernstein with `M` parameters. 
+* M the number of Bernstein paramters (we use 50) 
+* T The number of samples for the Monte-Carlo estimates (we use T=10) in all experiments.
+* num_epochs the number of epochs training (we use 100,000 in all experiments)
 
 for example:
 ```
@@ -43,7 +49,7 @@ for example:
 #data, method, num_epochs, M, T
 R CMD BATCH --vanilla "--args run 8SCHOOLS_CP F1F2 100000 50 10" multidimensional_script.R
 ```
-produces samples from the posterior (`w` together with the variational posterior densities `log_qs`, the prior `L_prio` and likelihood `LLs` at those samples). For e.g. (`R/run/gpu_8SCHOOLS_F1F2_Epo_100000_M_50_T_10/samples_1.rda`) for 5 runs. Also storted in the directories are the loss histories. 
+In addition we do 5 replicates. This produces samples from the posterior (`w` together with the variational posterior densities `log_qs`, the prior `L_prio` and likelihood `LLs` at those samples). For e.g. (`R/run/gpu_8SCHOOLS_F1F2_Epo_100000_M_50_T_10/samples_1.rda`) for the first run. Also storted in the directories are the loss histories. 
 
 #### Ground thruth
 The Stan-files for the ground thruth can be found in the [mcmc](https://github.com/tensorchiefs/bfvi_paper/tree/main/mcmc) directory.
@@ -63,7 +69,7 @@ Preprocessing M1, and M3 work on images. These images have been downscaled to 12
 
 ###### M1 (only image data) and M3 (semistructed) 
 Performance meassure for M1 can be produced with `Ivonne_MA/Semi-structured_NN.ipynb`
-Performance meassure and samples for semistructured M3 model `Ivonne_MA/Semi-structured_NN.ipynb` (second half of the script)
+Performance meassure and samples for the age posterior (`Ivonne_MA/semi_posterior_slope_age.csv`) for semistructured M3 model `Ivonne_MA/Semi-structured_NN.ipynb` (second half of the script)
 
 #### Plotting
 The figure is created by `R/eval_melanoma.r` which reads in posterior samples for the age-slope from MCMC, M2 BF-VI, M3 semi-structured.
