@@ -1,4 +1,4 @@
-# bfvi_papern / How to Reproduce the results
+# bfvi_papern how to reproduce the results
 
 # One dimensional examples.
 For the one dimensional examples (Bernoulli/Cauchy) have been done using python. 
@@ -16,7 +16,7 @@ For Cauchy, we did a ablation study investigating the effects of different parts
 ### Workflow
 #### Raw Data
 ##### MCMC 
-[mcmc/cauchy/mcmc_cauchy.stan](https://github.com/tensorchiefs/bfvi_paper/blob/main/mcmc/cauchy/mcmc_cauchy.stan) + R/eval_cauchy_ablation_create_kl_plots.R -> mcmc/cauchy/mcmc_samples_cauchy.rda 
+`mcmc/cauchy/mcmc_cauchy.stan`+ `R/eval_cauchy_ablation_create_kl_plots.R` -> `mcmc/cauchy/mcmc_samples_cauchy.rda` 
 
 ##### Gauss-VI: `Python/Cauchy/Cauchy.ipnb` → `Python/Cauchy/Gauss-VI_densities.csv.gz`
 `Gauss-VI_densities.csv` contain samples `w` (first colom, in paper called xi) and `log_p` (second colom)
@@ -35,12 +35,12 @@ The script `R/eval_cauchy_ablation_create_kl_plot_data.R` creates the data files
 The figures (Fig 3a, 3b)  are created with  `R/eval_cauchy_ablation.R`
 
 # Models with multiple parameters
-The BF-VI results for the remaining experiments (except Melanoma M2, which is described below) have created using `multidimensional_script.R`. In this script for the various models/data (like 8Schools_CP) the likelihood and the prior is defined. This script can be run with the follwing command line parameters:
+The BF-VI results for the remaining experiments have created using `multidimensional_script.R`. In this script for the various models/data (like 8SCHOOLS_CP, DIAMONDS) the likelihood and the prior is defined. This script can be run with the follwing command line parameters:
 
 * data the model to be used like (`8SCHOOLS_CP`) or `DIAMONDS`
 * method the transformation method used. We use `F1F2` in all experiments: which is normal -> linear transformation -> sigmoid --> Bernstein with `M` parameters. 
-* M the number of Bernstein paramters (we use 50) 
-* T The number of samples for the Monte-Carlo estimates (we use T=10) in all experiments.
+* M the number of Bernstein paramters (we use 50 in all experiments) 
+* T The number of samples for the Monte-Carlo estimates (we use T=10 in all experiments).
 * num_epochs the number of epochs training (we use 100,000 in all experiments)
 
 for example:
