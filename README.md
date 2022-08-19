@@ -1,29 +1,33 @@
 # bfvi_papern how to reproduce the results
 
 # One dimensional examples.
-For the one dimensional examples (Bernoulli/Cauchy) have been done using python. 
+The examples with only one parameter with a corresponding 1D posterior (Bernoulli/Cauchy) have been done using python. 
 
 ## Bernoulli:
 ### Workflow
-#### Raw Data (`Python/Bernoulli/bernoulli_1D_F1F2.csv.gz`)
-This file includes samples form the analytical solution, the Gaussian-VI, and the BF-Vi approximation. It is created by [Python/Bernoulli/Bernoulli_1D_F1F2.ipnb](https://github.com/tensorchiefs/bfvi_paper/blob/main/Python/Bernoulli/Bernoulli_1D_F1F2.ipynb) together with `Python/Bernoulli/vimlts_fast.py`
+#### Data generation 
+The file `Python/Bernoulli/bernoulli_1D_F1F2.csv.gz` holds samples form the analytical solution, the Gaussian-VI, and the BF-Vi approximation. It is created by [Python/Bernoulli/Bernoulli_1D_F1F2.ipnb](https://github.com/tensorchiefs/bfvi_paper/blob/main/Python/Bernoulli/Bernoulli_1D_F1F2.ipynb) together with `Python/Bernoulli/vimlts_fast.py`
 
 #### Plotting
 The figure is created by `R/eval_Bernoulli_1D.R` using the data from `Python/Bernoulli/bernoulli_1D_F1F2.csv.gz`
 
 ## Cauchy
-For Cauchy, we did a ablation study investigating the effects of different parts of the transformation. 
+ 
 ### Workflow
-#### Raw Data
+#### Data generation
+
 ##### MCMC 
+To get a ground truth for the posterior we do MCMC
 `mcmc/cauchy/mcmc_cauchy.stan`+ `R/eval_cauchy_ablation_create_kl_plots.R` -> `mcmc/cauchy/mcmc_samples_cauchy.rda` 
 
-##### Gauss-VI: `Python/Cauchy/Cauchy.ipnb` → `Python/Cauchy/Gauss-VI_densities.csv.gz`
+##### Gauss-VI: 
+`Python/Cauchy/Cauchy.ipnb` → `Python/Cauchy/Gauss-VI_densities.csv.gz`
 `Gauss-VI_densities.csv` contain samples `w` (first colom, in paper called xi) and `log_p` (second colom)
 
+For Cauchy, we did a ablation study investigating the effects of different methods to transform between a predefined simple distribution and the variational posterior. Here we vary the simple transformation, and the transformations including the flexibility of the involved Bernstein polynomial.
 ##### BF-VI
-Parameter-Files 
-Many ablation runs have been done with python (`bfvi/bfvi/cauchy_eval_ablation.py`) on GPU and CPU enviromemnts. The results are stored in from of the parameters defining the Bernstein flows in respective directories of `bfvi/bfvi/runs/cauchy_ablation/`. For the creation of the paramter files manipulations (like commenting in/out the truncated normal) need to be done in addtion the following files:
+Generated parameter files: 
+Many ablation runs have been done with python (`bfvi/bfvi/cauchy_eval_ablation.py`) on GPU and CPU enviromemnts. The results are stored in from of the parameter files (columns are 'seed','epoch','az','bz', theta_1, ..., theat_M) holding information on the used seed for intialization and the number of epochs during training and the fitted parameters  of the transformation, i.e. the slope and intercept of the linear trafo and the parameters theta of the Bernstein polynomials, see e.g. `cauchy_eval_ablation_M_1_F1F2_params.csv` stored in  `bfvi/bfvi/runs/cauchy_ablation/`. For the creation of the paramter files manipulations (like commenting in/out the truncated normal) need to be done in addition the following files:
 
 * `bfvi/bfvi/vimlt_fast.py`: define methods and layers
 * `bfvi/bfvi/cauchy_ablation.py`: definitions of functions
