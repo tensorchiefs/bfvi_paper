@@ -1,15 +1,14 @@
 # bfvi_papern how to reproduce the results
 
 # One dimensional examples.
-The examples with only one parameter with a corresponding 1D posterior (Bernoulli/Cauchy) have been done using python. 
 
 ## Bernoulli:
 ### Workflow
 #### Data generation 
-The file `Python/Bernoulli/bernoulli_1D_F1F2.csv.gz` holds samples form the analytical solution, the Gaussian-VI, and the BF-Vi approximation. It is created by [Python/Bernoulli/Bernoulli_1D_F1F2.ipnb](https://github.com/tensorchiefs/bfvi_paper/blob/main/Python/Bernoulli/Bernoulli_1D_F1F2.ipynb) together with `Python/Bernoulli/vimlts_fast.py`
+The file `Python/Bernoulli/bernoulli_1D_F1F2.csv.gz` holds samples from form the analytical solution, the Gaussian-VI variational posterior, and the BF-VI variational posterior along with the corresponding posterior density at this position and additional information of the used method. It is created by [Python/Bernoulli/Bernoulli_1D_F1F2.ipnb](https://github.com/tensorchiefs/bfvi_paper/blob/main/Python/Bernoulli/Bernoulli_1D_F1F2.ipynb) together with `Python/Bernoulli/vimlts_fast.py`
 
 #### Plotting
-The figure for the paper is created by `R/eval_Bernoulli_1D.R` using the data from `Python/Bernoulli/bernoulli_1D_F1F2.csv.gz` and stored in the `figure` directory.
+The figure for the paper is created by `R/eval_Bernoulli_1D.R` using the data from `Python/Bernoulli/bernoulli_1D_F1F2.csv.gz` and is stored in the `figure` directory.
 
 ## Cauchy
  
@@ -26,7 +25,7 @@ To get a ground truth for the posterior we do MCMC
 
 For Cauchy, we did an ablation study investigating the effects of different methods to transform between a predefined simple distribution and the variational posterior. Here we vary the simple transformation, and the transformations including the flexibility of the involved Bernstein polynomial.
 ##### BF-VI
-Many ablation runs have been done with python (`bfvi/bfvi/cauchy_eval_ablation.py`) on GPU and CPU enviromemnts. The results are stored in from of the parameter files (columns are 'seed', 'epoch', 'az', 'bz', theta_1, ..., theat_M) holding information on the used seed for intialization and the number of epochs during training and the fitted parameters  of the transformation, i.e. the slope and intercept of the linear trafo and the parameters theta of the Bernstein polynomials, see e.g. `cauchy_eval_ablation_M_1_F1F2_params.csv` stored in  `bfvi/bfvi/runs/cauchy_ablation/`. For the creation of the paramter files, manipulations (like commenting in/out the truncated normal) need to be done in the following files:
+The ablation runs have been done with python (`bfvi/bfvi/cauchy_eval_ablation.py`) on GPU and CPU enviromemnts. The results are stored in from of the parameter files (columns are 'seed', 'epoch', 'az', 'bz', theta_1, ..., theat_M) holding information on the used seed for intialization and the number of epochs during training and the fitted parameters  of the transformation, i.e. the slope and intercept of the linear trafo and the parameters theta of the Bernstein polynomials, see e.g. `cauchy_eval_ablation_M_1_F1F2_params.csv` stored in  `bfvi/bfvi/runs/cauchy_ablation/`. For the creation of the paramter files, manipulations (like commenting in/out the truncated normal) need to be done in the following files:
 
 * `bfvi/bfvi/vimlt_fast.py`: define methods and layers
 * `bfvi/bfvi/cauchy_ablation.py`: definitions of functions
@@ -35,7 +34,7 @@ Many ablation runs have been done with python (`bfvi/bfvi/cauchy_eval_ablation.p
 The script `R/eval_cauchy_ablation_create_kl_plot_data.R` creates the data files for the plotting from the parameter files in the repectives files in (`R/runs/Cauchy1D`)
 
 #### Plotting
-The figures for the paper  are created with  `R/eval_cauchy_ablation.R` and stored in the `figure` directory.
+The figures for the paper  are created with  `R/eval_cauchy_ablation.R` and is stored in the `figure` directory.
 
 # Models with multiple parameters
 The BF-VI results for the experiments with multi-dimensional posteriors have been created using `multidimensional_script.R`, which defines the likelihood and the prior for the different mulit-dimensional models/data (like 8SCHOOLS_CP, DIAMONDS etc - note that the Melanoma experiments are an exception and are discussed below separately). This script `multidimensional_script.R` can be run with the follwing command line parameters:
