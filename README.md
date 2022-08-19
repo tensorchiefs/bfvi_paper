@@ -1,11 +1,11 @@
 # bfvi_papern how to reproduce the results
 
 # One dimensional examples.
-
+In the Bernoulli and Cauchy experiment we use variational inference (BF-VI and Gauss-VI) to fit Bayes models with only one parameter and correspondingly a 1D posterior. We compare the fitted variational posteriors with the ground truth posterior.
 ## Bernoulli:
 ### Workflow
 #### Data generation 
-The file `Python/Bernoulli/bernoulli_1D_F1F2.csv.gz` holds samples from form the analytical solution, the Gaussian-VI variational posterior, and the BF-VI variational posterior along with the corresponding posterior density at this position and additional information of the used method. It is created by [Python/Bernoulli/Bernoulli_1D_F1F2.ipnb](https://github.com/tensorchiefs/bfvi_paper/blob/main/Python/Bernoulli/Bernoulli_1D_F1F2.ipynb) together with `Python/Bernoulli/vimlts_fast.py`
+The file `Python/Bernoulli/bernoulli_1D_F1F2.csv.gz` holds samples from form the analytical computed ground truth posterior, the Gaussian-VI variational posterior, and the BF-VI variational posterior along with the corresponding posterior density at this position and additional information of the used method. It is created by `Python/Bernoulli/Bernoulli_1D_F1F2.ipnb` together with `Python/Bernoulli/vimlts_fast.py`
 
 #### Plotting
 The figure for the paper is created by `R/eval_Bernoulli_1D.R` using the data from `Python/Bernoulli/bernoulli_1D_F1F2.csv.gz` and is stored in the `figure` directory.
