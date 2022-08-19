@@ -55,10 +55,10 @@ R CMD BATCH --vanilla "--args run 8SCHOOLS_CP F1F2 100000 50 10" multidimensiona
 We run all experiment 5-times with random intializations. We sample from the fitted variational posterior q and store the samples `w` together with the variational log-posterior densities `log_qs`, the log-prior `L_prio` and log-likelihood `LLs` at those samples in a sample result file (e.g. `R/run/gpu_8SCHOOLS_F1F2_Epo_100000_M_50_T_10/samples_1.rda`) for all runs. In the same directory we also stroe the 5 loss histories (e.g. `R/run/gpu_8SCHOOLS_F1F2_Epo_100000_M_50_T_10/loss_hist_1.rda`). 
 
 #### Ground thruth
-The Stan-files for the ground thruth can be found in the [mcmc](https://github.com/tensorchiefs/bfvi_paper/tree/main/mcmc) directory.
+To get a ground truth for the posterior we do MCMC. The Stan-files can be found in the `mcmc` directory. 
 
 #### Ploting
-Using the corresponding eval-files (e.g `R/eval_8Schools_cp.R`) the metrics (e.g. `k-hat` with bootstraps CI) are calculated and plotted (e.g. `R/run/gpu_8SCHOOLS_F1F2_Epo_100000_M_50_T_10/k_hat.pdf`) and the final plots for the paper are procuded an stored in the `figures` directory.  
+Using the corresponding eval-files (e.g `R/eval_8Schools_cp.R`) the final plots for the paper are procuded an stored in the `figures` directorythe. Moreover, the metrics (e.g. `k-hat` with bootstraps CI) are calculated and plotted (e.g. `R/run/gpu_8SCHOOLS_F1F2_Epo_100000_M_50_T_10/k_hat.pdf`).  
 
 # Melanoma models M1, M2, and M3
 Model M1 is based on images only, M2 on tabular data (age information) only, and M3 is semi-structured based on images and tabular data. The melanoma data have been downloaded from  https://challenge.isic-archive.com/data/#2020 and the images were downscaled to 128x128 pixels. The code (getData and resizeImages) can be found at `bfvi_paper/Ivonne_MA/functions/` or downloaded from https://www.dropbox.com/s/n1jodnzb71l3j8w/trainRes.zip?dl=0 
