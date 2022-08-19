@@ -35,44 +35,44 @@ The script `R/eval_cauchy_ablation_create_kl_plot_data.R` creates the data files
 The figures (Fig 3a, 3b)  are created with  `R/eval_cauchy_ablation.R`
 
 # Models with multiple parameters
-The BF-VI results for the remaining experiments have created using `multidimensional_script.R`. In this script for the various models/data (like 8SCHOOLS_CP, DIAMONDS) the likelihood and the prior is defined. This script can be run with the follwing command line parameters:
+The BF-VI results for the experiments with multi-dimensional posteriors have been created using `multidimensional_script.R` (the Melanoma experiments are an esception and are discussed below). In this script for the various models/data (like 8SCHOOLS_CP, DIAMONDS) the likelihood and the prior is defined. This script can be run with the follwing command line parameters:
 
-* data the model to be used like (`8SCHOOLS_CP`) or `DIAMONDS`
-* method the transformation method used. We use `F1F2` in all experiments: which is normal -> linear transformation -> sigmoid --> Bernstein with `M` parameters. 
-* M the number of Bernstein paramters (we use 50 in all experiments) 
-* T The number of samples for the Monte-Carlo estimates (we use T=10 in all experiments).
-* num_epochs the number of epochs training (we use 100,000 in all experiments)
+* data: the model to be used like (`8SCHOOLS_CP` or `DIAMONDS`)
+* method: the Bernstein Flow method that transforms from the simple predefined distribution to the variational posterior. We use `F1F2` in all experiments:  N(0,1) -> sigmoid -> Bernstein polynomial -> variational posterior distribution q. 
+* M: the number of paramters in the Bernstein polynomial (we use 50 in all experiments) 
+* T: The number of samples for the Monte-Carlo estimates during training (we use T=10 in all experiments).
+* num_epochs: the number of epochs training (we use 100,000 in all experiments)
 
-for example:
+For example:
 ```
 #The argument order is 
 #data, method, num_epochs, M, T
 R CMD BATCH --vanilla "--args run 8SCHOOLS_CP F1F2 100000 50 10" multidimensional_script.R
 ```
-In addition we do 5 replicates. This produces samples from the posterior (`w` together with the variational posterior densities `log_qs`, the prior `L_prio` and likelihood `LLs` at those samples). For e.g. (`R/run/gpu_8SCHOOLS_F1F2_Epo_100000_M_50_T_10/samples_1.rda`) for the first run. Also storted in the directories are the loss histories. 
+We run all experiment 5-times with random intializations. We sample from the fitted variational posterior q and store the samples `w` together with the variational log-posterior densities `log_qs`, the log-prior `L_prio` and log-likelihood `LLs` at those samples in a sample result file (e.g. `R/run/gpu_8SCHOOLS_F1F2_Epo_100000_M_50_T_10/samples_1.rda`) for all runs. In the same directory we also stroe the 5 loss histories (e.g. `R/run/gpu_8SCHOOLS_F1F2_Epo_100000_M_50_T_10/loss_hist_1.rda`). 
 
 #### Ground thruth
 The Stan-files for the ground thruth can be found in the [mcmc](https://github.com/tensorchiefs/bfvi_paper/tree/main/mcmc) directory.
 
 #### Ploting
-Using the corresponding eval-files (e.g `R/eval_8Schools_cp.R`) the metrics are calculated and the final plots are procuded. The metrics comprise `k-hat` with bootstraps CI. 
+Using the corresponding eval-files (e.g `R/eval_8Schools_cp.R`) the metrics (e.g. `k-hat` with bootstraps CI) are calculated and plotted (e.g. `R/run/gpu_8SCHOOLS_F1F2_Epo_100000_M_50_T_10/k_hat.pdf`) and the final plots for the paper are procuded an stored in the `figures` directory.  
 
-# Semistructured Models (Melanoma)
-Preprocessing M1, and M3 work on images. These images have been downscaled to 128x128 pixels. The code (getData and resizeImages) can be found at `bfvi_paper/Ivonne_MA/functions/` or downloaded from https://www.dropbox.com/s/n1jodnzb71l3j8w/trainRes.zip?dl=0 
+# Melanoma models M1, M2, and M3
+Model M1 is based on images only, M2 on tabular data (age information) only, and M3 is semi-structured based on images and tabular data. The melanoma data have been downloaded from  https://challenge.isic-archive.com/data/#2020 and the images were downscaled to 128x128 pixels. The code (getData and resizeImages) can be found at `bfvi_paper/Ivonne_MA/functions/` or downloaded from https://www.dropbox.com/s/n1jodnzb71l3j8w/trainRes.zip?dl=0 
 
 ### Workflow
 #### Raw Data 
 
 ##### M2 (only tabular data)
-* MCMC samples (`mcmc/mela_m2/mcmc_mela_m2.stan`, `R/eval_melanoma.r` --> `mcmc/mela_M2/mcmc_M2.csv.gz`
-* BF-VI samples (`multidimensional_script.R` store samples in `R\runs\cpu_MELA_F1F2_Epo_100000_M_50_T_10`. Note that due to large data set size the fit was not possible on a standard GPU) 
+* MCMC posterior samples (`mcmc/mela_m2/mcmc_mela_m2.stan`, `R/eval_melanoma.r` --> `mcmc/mela_M2/mcmc_M2.csv.gz`
+* BF-VI variational posterior samples (`multidimensional_script.R` store sample results in `R\runs\cpu_MELA_F1F2_Epo_100000_M_50_T_10`. Note that due to large data set size the fit was not possible on a standard GPU) 
 
 ###### M1 (only image data) and M3 (semistructed) 
-Performance meassure for M1 can be produced with `Ivonne_MA/Semi-structured_NN.ipynb`
-Performance meassure and samples for the age posterior (`Ivonne_MA/semi_posterior_slope_age.csv`) for semistructured M3 model `Ivonne_MA/Semi-structured_NN.ipynb` (second half of the script)
+The M1 and M3 models were fitted and M1's and M3's performance meassure were computed with `Ivonne_MA/Semi-structured_NN.ipynb`
+With the same notebook, the samples from the fitted posterior for the age-slope were generated and stored in `Ivonne_MA/semi_posterior_slope_age.csv` (second half of the script)
 
 #### Plotting
-The figure is created by `R/eval_melanoma.r` which reads in posterior samples for the age-slope from MCMC, M2 BF-VI, M3 semi-structured.
+The melanoma figure in the paper is created by `R/eval_melanoma.r` which reads in posterior samples for the age-slope from MCMC, M2 BF-VI, M3 semi-structured and plots their estimated densities.
 
 
 
