@@ -1,4 +1,5 @@
-# bfvi_papern how to reproduce the results
+# Workflow documentation
+In the following we describe how to reproduce the experiments along with all results that are presented in our manuscript with the title **Bernstein Flows for Flexible Posteriors in Variational Bayes**.
 
 # One dimensional examples.
 In the Bernoulli and Cauchy experiment we use variational inference (BF-VI and Gauss-VI) to fit Bayes models with only one parameter and correspondingly a 1D posterior. We compare the fitted variational posteriors with the ground truth posterior.
