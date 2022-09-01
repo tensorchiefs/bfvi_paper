@@ -1,12 +1,12 @@
 # Workflow documentation
 In the following we describe how to reproduce the experiments along with all results that are presented in our manuscript with the title **Bernstein Flows for Flexible Posteriors in Variational Bayes**.
 
-# Expermients with one model parameter.
+# Models with a single parameter
 In the Bernoulli and Cauchy experiment we use variational inference (BF-VI and Gauss-VI) to fit Bayes models with only one parameter and correspondingly a 1D posterior. We compare the fitted variational posteriors with the ground truth posterior.
 ## Bernoulli:
 ### Workflow
 #### Data generation 
-The file `Python/Bernoulli/bernoulli_1D_F1F2.csv.gz` holds samples from form the analytical computed ground truth posterior, the Gaussian-VI variational posterior, and the BF-VI variational posterior along with the corresponding posterior density at this position and additional information of the used method. It is created by `Python/Bernoulli/Bernoulli_1D_F1F2.ipnb` together with `Python/Bernoulli/vimlts_fast.py`
+The file `Python/Bernoulli/bernoulli_1D_F1F2.csv.gz` holds samples form the analytical computed ground truth posterior, the Gaussian-VI variational posterior, and the BF-VI variational posterior along with the corresponding posterior density at this position and additional information of the used method. It is created by `Python/Bernoulli/Bernoulli_1D_F1F2.ipnb` together with `Python/Bernoulli/vimlts_fast.py`
 
 #### Plotting
 The figure for the paper is created by `R/eval_Bernoulli_1D.R` using the data from `Python/Bernoulli/bernoulli_1D_F1F2.csv.gz` and is stored in the `figure` directory.
@@ -22,9 +22,9 @@ To get a ground truth for the posterior we do MCMC
 
 ##### Gauss-VI: 
 `Python/Cauchy/Cauchy.ipnb` → `Python/Cauchy/Gauss-VI_densities.csv.gz`
-`Gauss-VI_densities.csv` contain samples `w` (first colom, in paper called xi) and `log_p` (second colom)
+`Gauss-VI_densities.csv` contain samples `w` (first column, in paper called xi) and `log_p` (second column)
 
-For Cauchy, we did an ablation study investigating the effects of different methods to transform between a predefined simple distribution and the variational posterior. Here we vary the simple transformation, and the transformations including the flexibility of the involved Bernstein polynomial.
+For Cauchy, we did an ablation study investigating the effects of different methods to transform between a predefined simple distribution and the variational posterior. Here we vary the simple distribution $F_Z$ and the transformations including the flexibility of the involved Bernstein polynomial.
 ##### BF-VI
 The ablation runs have been done with python (`bfvi/bfvi/cauchy_eval_ablation.py`) on GPU and CPU enviromemnts. The results are stored in from of the parameter files (columns are 'seed', 'epoch', 'az', 'bz', theta_1, ..., theat_M) holding information on the used seed for intialization and the number of epochs during training and the fitted parameters  of the transformation, i.e. the slope and intercept of the linear trafo and the parameters theta of the Bernstein polynomials, see e.g. `cauchy_eval_ablation_M_1_F1F2_params.csv` stored in  `bfvi/bfvi/runs/cauchy_ablation/`. For the creation of the paramter files, manipulations (like commenting in/out the truncated normal) need to be done in the following files:
 
@@ -37,8 +37,8 @@ The script `R/eval_cauchy_ablation_create_kl_plot_data.R` creates the data files
 #### Plotting
 The figures for the paper  are created with  `R/eval_cauchy_ablation.R` and is stored in the `figure` directory.
 
-# Experiments with multiple model parameters
-The BF-VI results for the experiments with multi-dimensional posteriors have been created using `multidimensional_script.R`, which defines the likelihood and the prior for the different mulit-dimensional models/data (like 8SCHOOLS_CP, DIAMONDS etc - note that the Melanoma experiments are an exception and are discussed below separately). This script `multidimensional_script.R` can be run with the follwing command line parameters:
+# Models with multiple parameters
+The BF-VI results for the experiments with multi-dimensional posteriors (a: toy linear regression, b: Diamond, c: 8schools, d: NN based non-linear regression, e: Melanoma) have been created using `multidimensional_script.R`, which defines the likelihood and the prior for the different mulit-dimensional models/data (like 8SCHOOLS_CP, DIAMONDS etc - note that the Melanoma experiments are an exception and are discussed below separately). This script `multidimensional_script.R` can be run with the follwing command line parameters:
 
 * data: the model to be used like (`8SCHOOLS_CP` or `DIAMONDS`)
 * method: the Bernstein Flow method that transforms from the simple predefined distribution to the variational posterior. We use `F1F2` in all experiments:  N(0,1) -> sigmoid -> Bernstein polynomial -> variational posterior distribution q. 
