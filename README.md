@@ -1,7 +1,7 @@
 # Workflow documentation
 In the following we describe how to reproduce the experiments along with all results that are presented in our manuscript with the title **Bernstein Flows for Flexible Posteriors in Variational Bayes**.
 
-# One dimensional examples.
+# Expermients with one model parameter.
 In the Bernoulli and Cauchy experiment we use variational inference (BF-VI and Gauss-VI) to fit Bayes models with only one parameter and correspondingly a 1D posterior. We compare the fitted variational posteriors with the ground truth posterior.
 ## Bernoulli:
 ### Workflow
@@ -37,7 +37,7 @@ The script `R/eval_cauchy_ablation_create_kl_plot_data.R` creates the data files
 #### Plotting
 The figures for the paper  are created with  `R/eval_cauchy_ablation.R` and is stored in the `figure` directory.
 
-# Models with multiple parameters
+# Experiments with multiple model parameters
 The BF-VI results for the experiments with multi-dimensional posteriors have been created using `multidimensional_script.R`, which defines the likelihood and the prior for the different mulit-dimensional models/data (like 8SCHOOLS_CP, DIAMONDS etc - note that the Melanoma experiments are an exception and are discussed below separately). This script `multidimensional_script.R` can be run with the follwing command line parameters:
 
 * data: the model to be used like (`8SCHOOLS_CP` or `DIAMONDS`)
