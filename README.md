@@ -38,7 +38,13 @@ The script `R/eval_cauchy_ablation_create_kl_plot_data.R` creates the data files
 The figures for the paper  are created with  `R/eval_cauchy_ablation.R` and is stored in the `figure` directory.
 
 # Models with multiple parameters
-The BF-VI results for the experiments with multi-dimensional posteriors (a: toy linear regression, b: Diamond, c: 8schools, d: NN based non-linear regression, e: Melanoma) have been created using `multidimensional_script.R`, which defines the likelihood and the prior for the different mulit-dimensional models/data (like 8SCHOOLS_CP, DIAMONDS etc - note that the Melanoma experiments are an exception and are discussed below separately). This script `multidimensional_script.R` can be run with the follwing command line parameters:
+The BF-VI results for the experiments with multi-dimensional posteriors 
+* a: toy linear regression ("regression_2D")
+* b: Diamond, 
+* c: 8schools
+* d: NN based non-linear regression ("network")
+
+have been created using `multidimensional_script.R`, which defines the likelihood and the prior for the different mulit-dimensional models/data (like 8SCHOOLS_CP, DIAMONDS etc - note that the Melanoma experiments are an exception and are discussed below separately). This script `multidimensional_script.R` can be run with the follwing command line parameters:
 
 * data: the model to be used like (`8SCHOOLS_CP` or `DIAMONDS`)
 * method: the Bernstein Flow method that transforms from the simple predefined distribution to the variational posterior. We use `F1F2` in all experiments:  N(0,1) -> sigmoid -> Bernstein polynomial -> variational posterior distribution q. 
