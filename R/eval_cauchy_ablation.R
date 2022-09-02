@@ -80,7 +80,8 @@ df_kl = rbind(df_kl,
               data.frame(seed = 1, kl=kl_gauss, M=0.5, method='Gauss-VI', num_samples=1))
 
 dat = df_kl %>%
-  filter(M < 61009)
+  filter(M < 61009) %>% 
+  filter(method != 'Gauss-VI')
   #filter(method == 'F1F2' | method == 'Gauss-VI')
 
 gg_chauchy = ggplot(dat) +
@@ -93,13 +94,21 @@ gg_chauchy = ggplot(dat) +
   #annotate("text", x = 20, y = 2/20, label = "~1/M", size=6) +
   scale_color_manual(
     name = 'Method',
+    #https://stackoverflow.com/questions/62594966/replace-legend-labels-texts-with-greek-i-e-latex-symbols
     values = c(
-      "Gauss-VI" = "green",
+      #"Gauss-VI" = "green",
       "F1F2" = "darkblue",
       "SigmoidF2" = "turquoise",
       "TruncF2" = "brown"),
-    labels = c('Gauss-VI', 'Gauss-F1F2','Gauss-SigmoidF2','TruncGauss-F2')
-  )  +
+    unname(TeX(c(
+      "$f_1",
+      "$f_2",
+      "$f_3"
+    )))) +
+    #labels = c(
+    # "Gauss: F Sigma ",,
+    #  expression("Gauss: "),
+    #  "TruncGauss"))+
   apatheme
 gg_chauchy
 ggsave('figures/kl_vs_M_methods_chauchy.pdf',gg_chauchy)
