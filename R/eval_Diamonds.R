@@ -13,8 +13,10 @@ reps=5
 dir_name = 'R/runs/Diamonds'
 dir_name = 'R/runs/cpu_DIAMONDS_F1F2_Epo_100000_M_50_T_10/'
 df2 = make_plots_and_stats(dir_name = dir_name, reps=reps)
-
-
+df2$k_bar
+df2$k_rubin_lower
+df2$k_rubin_upper
+#5.340(-2.52,13.20) 
 if (FALSE){
   # we used provided MCMC samples
   library(posteriordb)
