@@ -67,7 +67,7 @@ To get a ground truth for the posterior we do MCMC. The Stan-files can be found 
 Using the corresponding eval-files (e.g `R/eval_8Schools_cp.R`) the final plots for the paper are procuded an stored in the `figures` directorythe. Moreover, the metrics (e.g. `k-hat` with bootstraps CI) are calculated and plotted (e.g. `R/run/gpu_8SCHOOLS_F1F2_Epo_100000_M_50_T_10/k_hat.pdf`).  
 
 # Melanoma models M1, M2, and M3
-Model M1 is based on images only, M2 on tabular data (age information) only, and M3 is semi-structured based on images and tabular data. The melanoma data have been downloaded from  https://challenge.isic-archive.com/data/#2020 and the images were downscaled to 128x128 pixels. The code (getData and resizeImages) can be found at `bfvi_paper/Ivonne_MA/functions/` or downloaded from https://www.dropbox.com/s/n1jodnzb71l3j8w/trainRes.zip?dl=0 
+Model M1 is based on images only, M2 on tabular data (age information) only, and M3 is semi-structured based on images and tabular data. The melanoma data have been downloaded from  https://challenge.isic-archive.com/data/#2020 and the images were downscaled to 128x128 pixels. The input images (getData and resizeImages) can be found at `bfvi_paper/Ivonne_MA/functions/` or downloaded from https://www.dropbox.com/s/n1jodnzb71l3j8w/trainRes.zip?dl=0 
 
 ### Workflow
 #### Data generation 
