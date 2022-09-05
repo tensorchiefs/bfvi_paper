@@ -53,6 +53,7 @@ hist(lls)
 mean(lls) #-0.08501698
 library(pROC)
 ci.auc(y_obs, ps) #95% CI: 0.6086-0.7075 (DeLong)
+auc(y_obs, ps) #0.66
 
 #### MCMC
 library(data.table)
