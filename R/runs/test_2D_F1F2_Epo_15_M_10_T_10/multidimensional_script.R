@@ -16,10 +16,10 @@ source("bern_utils.R")
 #https://www.delftstack.com/howto/r/r-command-line-arguments/
 
 if (TRUE){
-  EXP_NAME_prefix = 'mac1'
+  EXP_NAME_prefix = 'mac'
   method = 'F1F2' #An Transformation F1 = linear and sigmoid is prepended before the BF 
   DATA = 'DIAMONDS'   #2-D regression on simulated P=2 predictors
-  number_epochs = 15000L
+  number_epochs = 15L
   M = 50L #Degree of the Bernstein Polynomials (due to technical reason minimum is 2)
   T = 10L # number samples of w from q for ELBO-estimation during optimization 
 } 
@@ -47,7 +47,7 @@ print(paste0('Starting Experiment: ', EXP_NAME))
 NUM_REP = 5
 RUN_DIR = 'runs'
 SCRIPT_NAME = 'multidimensional_script.R'
-SAVE = FALSE #Save the experiment
+SAVE = TRUE #Save the experiment
 # Choose experiment ---------------
 #DATA = 'BOOK' #1-D regression on N=4 data points 
 #DATA = '8SCHOOLS'    # Bessere Parametrisierung NCP
@@ -248,7 +248,7 @@ if(DATA == 'DIAMONDS') {
     data = list(N = dat$N, Y = dat$Y, X = dat$X, K=dat$K, prior_only = dat$prior_only)
     save(data, file='diamonds.rda')
   }
-  load('../data/diamonds.rda')
+  load('data/diamonds.rda')
   #Centering (we also have an itercept)
   Xc = scale(data$X[,-1], center = TRUE, scale = FALSE)
   N = data$N
@@ -848,7 +848,7 @@ LF = tf_function(loss)
 loss_hist = NULL
 cubo_1_hist = NULL
 for (i in 1:number_epochs){
-  if(i %% 10 == 0) {
+  if(i %% 2 == 0) {
     # d = loss(theta_1_prime, maf, return_w = TRUE) #slow!
     # cubo_1_hist[i] = d$cubo_1
     print(paste0(i, " ", loss_$numpy()))#, " cubo_1 ", d$cubo_1, " cubo num stable", d$cubo_stable))

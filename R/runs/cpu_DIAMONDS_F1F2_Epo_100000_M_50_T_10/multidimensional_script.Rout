@@ -1,0 +1,40 @@
+
+R version 4.2.3 (2023-03-15) -- "Shortstop Beagle"
+Copyright (C) 2023 The R Foundation for Statistical Computing
+Platform: aarch64-apple-darwin20 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> ###### Notes #####
+> # master for all experiments in the BF-VI paper
+> if (exists("var"))
++ rm(T)
+Warning message:
+In rm(T) : object 'T' not found
+> library(keras)
+> library(tensorflow)
+> library(tfprobability)
+> library(ggplot2)
+> d = tf$version
+> d$VERSION #2.1.0
+[1] "2.10.0"
+> source("bern_utils.R")
+Error in file(filename, "r", encoding = encoding) : 
+  cannot open the connection
+Calls: source -> file
+In addition: Warning message:
+In file(filename, "r", encoding = encoding) :
+  cannot open file 'bern_utils.R': No such file or directory
+Execution halted

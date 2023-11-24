@@ -8,7 +8,7 @@ library(tfprobability)
 library(ggplot2)
 d = tf$version
 d$VERSION #2.1.0
-source("bern_utils.R")
+source("../../bern_utils.R")
 
 ### User Specific Settings 
 # RUN_DIR = '~/Dropbox/__ZHAW/__Projekte_Post_ZHAH/shared_Oliver_Beate/tmvi/runs'
@@ -16,22 +16,23 @@ source("bern_utils.R")
 
 #https://www.delftstack.com/howto/r/r-command-line-arguments/
 
-if (FALSE){
+if (TRUE){
   EXP_NAME_prefix = 'test'
   method = 'F1F2' #An Transformation F1 = linear and sigmoid is prepended before the BF 
   DATA = '2D'   #2-D regression on simulated P=2 predictors
   number_epochs = 15L
   M = 10L #Degree of the Bernstein Polynomials (due to technical reason minimum is 2)
-  T = 600L # number samples of w from q for ELBO-estimation during optimization 
+  T = 10L # number samples of w from q for ELBO-estimation during optimization 
+} if (FALSE){
+  myargs = commandArgs(trailingOnly = TRUE)
+  EXP_NAME_prefix = myargs[1]
+  DATA = myargs[2]
+  method = myargs[3]
+  number_epochs = as.integer(myargs[4])
+  M = as.integer(myargs[5])
+  T = as.integer(myargs[6])
+  #R CMD BATCH --vanilla "--args test2 2D F1F2 20 10 600" multidimensional_script.R
 }
-myargs = commandArgs(trailingOnly = TRUE)
-EXP_NAME_prefix = myargs[1]
-DATA = myargs[2]
-method = myargs[3]
-number_epochs = as.integer(myargs[4])
-M = as.integer(myargs[5])
-T = as.integer(myargs[6])
-#R CMD BATCH --vanilla "--args test2 2D F1F2 20 10 600" multidimensional_script.R
 
 #EXP_NAME = 'test2DTrunc_15k_M10_R2'
 EXP_NAME = paste0(EXP_NAME_prefix,
