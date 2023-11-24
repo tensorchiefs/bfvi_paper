@@ -40,3 +40,5 @@ vignettes/*.pdf
 
 bfvi_paper.Rproj
 *.DS_Store
+*.pyc
+Python/pyproject.toml
